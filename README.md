@@ -16,3 +16,4 @@
 -   npm i --save-dev babel-jest @babel/preset-env
 -   npm i --save-dev supertest @types/supertest
 -   npm i --save-dev @jest/globals
+-   npm i dotenv
