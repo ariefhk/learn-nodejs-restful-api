@@ -5,10 +5,11 @@
     "description": "",
     "main": "./src/main.js",
     "scripts": {
-        "dev": "nodemon .src/main.js",
+        "start": "node ./src/main.js",
+        "dev": "nodemon ./src/main.js",
         "db:studio": "npx prisma studio",
         "db:push": "npx prisma db push --force-reset && npx prisma db push",
-        "db:seed": "node ./utils/run-seeder.js",
+        "db:seed": "node ./prisma/run-seeder.js",
         "db:push:seed": "npm run db:push && npm run db:seed",
         "test": "jest -i"
     },
