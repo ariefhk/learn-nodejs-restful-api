@@ -11,7 +11,7 @@
         "db:push": "npx prisma db push --force-reset && npx prisma db push",
         "db:seed": "node ./prisma/run-seeder.js",
         "db:push:seed": "npm run db:push && npm run db:seed",
-        "test": "jest -i --testTimeout=20000 --coverage --colors --verbose --detectOpenHandles --forceExit"
+        "test": "jest -i --runInBand --logHeapUsage --no-cache --coverage --colors --verbose --detectOpenHandles --forceExit"
     },
     "jest": {
         "transform": {

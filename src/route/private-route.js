@@ -17,5 +17,6 @@ privateRoute.post(`/api/contacts`, contactController.create);
 privateRoute.get(`/api/contacts/:contactId`, contactController.get);
 privateRoute.put(`/api/contacts/:contactId`, contactController.update);
 privateRoute.delete(`/api/contacts/:contactId`, contactController.remove);
+privateRoute.get(`/api/contacts`, contactController.search);
 
 export { privateRoute };
