@@ -3,8 +3,13 @@
     "name": "learn-nodejs-restful-api",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "./src/main.js",
     "scripts": {
+        "dev": "nodemon .src/main.js",
+        "db:studio": "npx prisma studio",
+        "db:push": "npx prisma db push --force-reset && npx prisma db push",
+        "db:seed": "node ./utils/run-seeder.js",
+        "db:push:seed": "npm run db:push && npm run db:seed",
         "test": "jest -i"
     },
     "jest": {
@@ -16,6 +21,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@prisma/client": "^5.3.1",
         "bcrypt": "^5.1.1",
         "dotenv": "^16.3.1",
         "express": "^4.18.2",
@@ -34,6 +40,7 @@
         "@types/uuid": "^9.0.4",
         "babel-jest": "^29.7.0",
         "jest": "^29.7.0",
+        "nodemon": "^3.0.1",
         "prisma": "^5.3.1",
         "supertest": "^6.3.3"
     }
