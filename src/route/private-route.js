@@ -11,5 +11,6 @@ const prefixUsers = "/api/users";
 // User Route /api/users
 privateRoute.get(`${prefixUsers}/current`, userController.get);
 privateRoute.patch(`${prefixUsers}/current`, userController.update);
+privateRoute.delete(`${prefixUsers}/logout`, userController.logout);
 
 export { privateRoute };
