@@ -7,15 +7,13 @@ import { authMiddleware } from "../middleware/auth-middleware.js";
 const privateRoute = new express.Router();
 privateRoute.use(authMiddleware);
 
-const prefixUsers = "/api/users";
-const prefixContacts = "/api/contacts";
+// User Route
+privateRoute.get(`/api/users/current`, userController.get);
+privateRoute.patch(`/api/users/current`, userController.update);
+privateRoute.delete(`/api/users/logout`, userController.logout);
 
-// User Route /api/users
-privateRoute.get(`${prefixUsers}/current`, userController.get);
-privateRoute.patch(`${prefixUsers}/current`, userController.update);
-privateRoute.delete(`${prefixUsers}/logout`, userController.logout);
-
-// Contact Route /api/contacts
-privateRoute.post(`${prefixContacts}`, contactController.create);
+// Contact Route
+privateRoute.post(`/api/contacts`, contactController.create);
+privateRoute.get(`/api/contacts/:contactId`, contactController.get);
 
 export { privateRoute };

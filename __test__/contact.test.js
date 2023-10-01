@@ -1,11 +1,12 @@
 import { web } from "../src/application/web.js";
 import supertest from "supertest";
 import {
+    createTestContact,
     createTestUser,
+    getTestContact,
     removeAllTestContacts,
     removeTestUser,
 } from "./test-util.js";
-import { logger } from "../src/application/logging.js";
 
 describe("POST /api/contacts", () => {
     beforeEach(async () => {
@@ -54,4 +55,50 @@ describe("POST /api/contacts", () => {
         expect(result.status).toBe(400);
         expect(result.body.errors).toBeDefined();
     });
+});
+
+describe("GET /api/contacts/:contactId", () => {
+    beforeEach(async () => {
+        await createTestUser();
+        await createTestContact();
+    });
+
+    afterEach(async () => {
+        await removeAllTestContacts();
+        await removeTestUser();
+    });
+
+    it("should can get contact", async () => {
+        const testContact = await getTestContact();
+
+        const result = await supertest(web)
+            .get(`/api/contacts/${testContact.id}`)
+            .set("Authorization", "test");
+
+        console.log(result.body);
+
+        expect(result.status).toBe(200);
+        expect(result.body.data.id).toBe(testContact.id);
+        expect(result.body.data.first_name).toBe(testContact.first_name);
+        expect(result.body.data.last_name).toBe(testContact.last_name);
+        expect(result.body.data.email).toBe(testContact.email);
+        expect(result.body.data.phone).toBe(testContact.phone);
+    });
+
+    // it("should reject if request is not valid", async () => {
+    //     const result = await supertest(web)
+    //         .post("/api/contacts")
+    //         .set("Authorization", "test")
+    //         .send({
+    //             first_name: "",
+    //             last_name: "test",
+    //             email: "test",
+    //             phone: "0809000000043534534543534534543535345435435",
+    //         });
+
+    //     // console.log(result.body);
+
+    //     expect(result.status).toBe(400);
+    //     expect(result.body.errors).toBeDefined();
+    // });
 });
