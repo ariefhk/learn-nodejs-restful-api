@@ -8,7 +8,8 @@ privateRoute.use(authMiddleware);
 
 const prefixUsers = "/api/users";
 
-// User Route
+// User Route /api/users
 privateRoute.get(`${prefixUsers}/current`, userController.get);
+privateRoute.patch(`${prefixUsers}/current`, userController.update);
 
 export { privateRoute };

@@ -1,7 +1,8 @@
 import supertest from "supertest";
 import { web } from "../src/application/web.js";
 import { prismaClient } from "../src/application/database.js";
-import { createTestUser, removeTestUser } from "./test-util.js";
+import { createTestUser, removeTestUser, getTestUser } from "./test-util.js";
+import bcrypt from "bcrypt";
 
 describe("POST /api/users", () => {
     afterEach(async () => {
@@ -146,9 +147,61 @@ describe("GET /api/users/current", () => {
             .get("/api/users/current")
             .set("Authorization", "salah");
 
-        console.log(result.body);
+        // console.log(result.body);
 
         expect(result.status).toBe(401);
         expect(result.body.errors).toBeDefined();
+    });
+});
+
+describe("PATCH /api/users/current", () => {
+    beforeEach(async () => {
+        await createTestUser();
+    });
+
+    afterEach(async () => {
+        await removeTestUser();
+    });
+
+    it("should can update user name", async () => {
+        const result = await supertest(web)
+            .patch("/api/users/current")
+            .set("Authorization", "test")
+            .send({
+                name: "Arief",
+            });
+
+        // console.log(result.body);
+
+        expect(result.status).toBe(200);
+        expect(result.body.data.username).toBe("test");
+        expect(result.body.data.name).toBe("Arief");
+    });
+
+    it("should can update user password", async () => {
+        const result = await supertest(web)
+            .patch("/api/users/current")
+            .set("Authorization", "test")
+            .send({
+                password: "rahasiabaru",
+            });
+
+        // console.log(result.body);
+
+        const user = await getTestUser();
+        expect(await bcrypt.compare("rahasiabaru", user.password)).toBe(true);
+    });
+
+    it("should reject if request is not valid", async () => {
+        const result = await supertest(web)
+            .patch("/api/users/current")
+            .set("Authorization", "salah")
+            .send({
+                username: "salah",
+            });
+
+        // console.log(result.body);
+
+        expect(result.status).toBe(401);
     });
 });
